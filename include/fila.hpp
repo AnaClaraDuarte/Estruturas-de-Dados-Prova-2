@@ -110,10 +110,10 @@ Fila<T>::~Fila() { delete [] dados;}
 
 template <class T>
 void Fila<T>::enfileirar(const T& valor) {
-  if(tamanho == capacidade){
-    throw std::out_of_range("Lista cheia");
+  if (tamanho >= capacidade){
+    throw std::out_of_range("Fila cheia");
   }
-  dados[indice_fim] = valor; 
+  dados[indice_fim] = valor;
   indice_fim++;
   indice_fim %= capacidade;
   tamanho++;
@@ -121,17 +121,19 @@ void Fila<T>::enfileirar(const T& valor) {
 
 template <class T>
 T Fila<T>::desenfileirar() {
-  if(tamanho == 0){
-    throw std::out_of_range("Lista vazia");
+  if (esta_vazia()) {
+    throw std::out_of_range("Fila vazia");
   }
+  T valor = dados[indice_inicio];
   indice_inicio++;
   indice_inicio %= capacidade;
   tamanho--;
+  return valor;
 }
 
 template <class T>
 T& Fila<T>::frente() {
-  if (tamanho == 0){
+  if (esta_vazia()){
     throw std::out_of_range("Lista vazia");
   }
     return dados[indice_inicio];
