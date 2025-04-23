@@ -11,6 +11,7 @@
 template <class T>
 class Fila {
  public:
+
   /**
    * @brief Construtor da fila com capacidade personalizada.
    *
@@ -18,7 +19,7 @@ class Fila {
    *
    * @param capacidade A capacidade máxima da fila.
    */
-  Fila(size_t capacidade);
+  Fila(const size_t capacidade);
 
   /**
    * @brief Destrutor da fila.
@@ -102,25 +103,60 @@ class Fila {
 };
 
 template <class T>
-Fila<T>::Fila(size_t capacidade) {}
+Fila<T>::Fila(size_t capacidade) : capacidade{capacidade}, tamanho{0}, indice_inicio{0}, indice_fim{0}, dados{new T[capacidade]} {}
 
 template <class T>
-Fila<T>::~Fila() {}
+Fila<T>::~Fila() { delete [] dados;}
 
 template <class T>
-void Fila<T>::enfileirar(const T& valor) {}
+void Fila<T>::enfileirar(const T& valor) {
+  if(tamanho == capacidade){
+    throw std::out_of_range("Lista cheia");
+  }
+  dados[indice_fim] = valor; 
+  indice_fim++;
+  indice_fim %= capacidade;
+  tamanho++;
+}
 
 template <class T>
-T Fila<T>::desenfileirar() {}
+T Fila<T>::desenfileirar() {
+  if(tamanho == 0){
+    throw std::out_of_range("Lista vazia");
+  }
+  indice_inicio++;
+  indice_inicio %= capacidade;
+  tamanho--;
+}
 
 template <class T>
-T& Fila<T>::frente() {}
+T& Fila<T>::frente() {
+  if (tamanho == 0){
+    throw std::out_of_range("Lista vazia");
+  }
+    return dados[indice_inicio];
+}
 
 template <class T>
-const T& Fila<T>::frente() const {}
+const T& Fila<T>::frente() const {
+  if (tamanho == 0){
+    throw std::out_of_range("Lista vazia");
+  }
+    return dados[indice_inicio];
+}
 
 template <class T>
-bool Fila<T>::esta_vazia() const {}
+bool Fila<T>::esta_vazia() const { 
+  if (tamanho == 0){
+    return true;
+  }
+  return false;
+}
 
 template <class T>
-bool Fila<T>::esta_cheia() const {}
+bool Fila<T>::esta_cheia() const {
+  if (tamanho >= capacidade){
+    return true;
+  }
+  return false;
+}
